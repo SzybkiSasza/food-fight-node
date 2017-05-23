@@ -23,7 +23,7 @@ export async function init(config) {
  */
 export async function listen(commandName, handler, transports) {
   checkInstance();
-  return instance.listen(commandName, handler, transports);
+  return await instance.listen(commandName, handler, transports);
 }
 
 /**
@@ -36,7 +36,7 @@ export async function listen(commandName, handler, transports) {
  */
 export async function call(entity, commandName, transportType, body) {
   checkInstance();
-  return instance.call(entity, commandName, transportType, body);
+  return await instance.call(entity, commandName, transportType, body);
 }
 
 /**
@@ -45,7 +45,7 @@ export async function call(entity, commandName, transportType, body) {
  */
 function checkInstance() {
   if (!instance) {
-    throw new Exception('Instance not initialized!');
+    throw new Error('Instance not initialized!');
   }
 
   return true;
