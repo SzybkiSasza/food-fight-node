@@ -1,3 +1,13 @@
-export default {};
+import {init, call, listen} from './instance';
 
-export {};
+export {
+  init,
+  call,
+  listen,
+};
+
+export default {
+  init,
+  call,
+  listen,
+};
