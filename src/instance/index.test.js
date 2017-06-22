@@ -1,12 +1,7 @@
 jest.mock('./instance');
 
-import {init} from './instance';
+import Instance from './instance';
 import * as index from './';
-
-const instanceMock = {
-  call: jest.fn(),
-  listen: jest.fn(),
-};
 
 describe('Instance index', () => {
   it('Is a defined export', () => {
@@ -38,13 +33,12 @@ describe('Instance index', () => {
   });
 
   it('Initializes the instance', () => {
-    init.mockImplementationOnce(async () => instanceMock);
     index.init({
       some: 'config',
       keys: 'here',
     });
 
-    expect(init).toHaveBeenCalledTimes(1);
+    expect(Instance).toHaveBeenCalledTimes(1);
   });
 
   it('Throws an error on second initialization', async () => {
@@ -59,16 +53,17 @@ describe('Instance index', () => {
   });
 
   it('Calls instance functions', async () => {
-    instanceMock.call.mockClear();
-    instanceMock.listen.mockClear();
+    const instanceInstance = Instance.mock.instances[0]; // Moon Moon!
+    instanceInstance.call.mockClear();
+    instanceInstance.listen.mockClear();
 
     await index.listen('cmdName', () => {}, ['direct']);
     await index.call('someEntity', 'cmdName', 'direct', {some: 'value'});
 
-    expect(instanceMock.listen).toHaveBeenCalledWith(
+    expect(instanceInstance.listen).toHaveBeenCalledWith(
       'cmdName', expect.any(Function), ['direct']
     );
-    expect(instanceMock.call).toBeCalledWith(
+    expect(instanceInstance.call).toBeCalledWith(
       'someEntity', 'cmdName', 'direct', {some: 'value'});
   });
 });

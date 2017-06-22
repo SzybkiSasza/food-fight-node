@@ -1,4 +1,4 @@
-import {init as initInstance} from './instance';
+import Instance from './instance';
 
 let instance;
 
@@ -8,7 +8,7 @@ let instance;
  */
 export async function init(config) {
   if (!instance) {
-    instance = await initInstance(config);
+    instance = new Instance(config);
   } else {
     throw new Error('Instance already initialized!');
   }
