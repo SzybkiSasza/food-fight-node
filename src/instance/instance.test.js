@@ -25,4 +25,21 @@ describe('Instance class tests', () => {
       expect(err.message).toEqual('Some Validation Error!');
     }
   });
+
+  it('Sets the config and initialization flag on the constructions', () => {
+    configSchema.validate.mockImplementationOnce(() => ({
+      value: {
+        some: 'config',
+      },
+    }));
+
+    const instance = new Instance({
+      entityName: 'EN',
+    });
+
+    expect(instance.isInitialized).toEqual(false);
+    expect(instance.config).toEqual({
+      some: 'config',
+    });
+  });
 });
