@@ -1,4 +1,8 @@
 /**
  * Direct transport - for intraprocess communication
  */
-export class Direct {}
+export class direct {
+  constructor(config) {}
+
+  async init() {}
+}

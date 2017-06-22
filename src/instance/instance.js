@@ -21,6 +21,9 @@ export default class Instance {
 
     // Indicates that the instance is not yet ready (has to be initialized)
     this.isInitialized = false;
+
+    // Initial transports list
+    this.transports = [];
   }
 
   /**
@@ -31,6 +34,7 @@ export default class Instance {
   async init() {
     for (let transport of this.config.transports) {
       console.log(transports);
+      console.log(transport);
     }
   }
 

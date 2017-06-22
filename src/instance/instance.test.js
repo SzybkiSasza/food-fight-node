@@ -54,5 +54,8 @@ describe('Instance class tests', () => {
     configSchema.validate.mockImplementationOnce(() => config);
 
     const instance = new Instance(config);
+    await instance.init();
+
+    
   });
 });
