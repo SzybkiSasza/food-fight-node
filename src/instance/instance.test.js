@@ -27,19 +27,32 @@ describe('Instance class tests', () => {
   });
 
   it('Sets the config and initialization flag on the constructions', () => {
+    const config = {
+      entityName: 'EN',
+    }
     configSchema.validate.mockImplementationOnce(() => ({
-      value: {
-        some: 'config',
-      },
+      value: config,
     }));
 
-    const instance = new Instance({
-      entityName: 'EN',
-    });
+    const instance = new Instance(config);
 
     expect(instance.isInitialized).toEqual(false);
-    expect(instance.config).toEqual({
-      some: 'config',
-    });
+    expect(instance.config).toEqual(config);
+  });
+
+  it('Asynchronously validates all the transports', async () => {
+    const config = {
+      value: {
+        entityName: 'Nom',
+        transports: [{
+          name: 'direct',
+        }, {
+          name: 'priority',
+        }],
+      },
+    };
+    configSchema.validate.mockImplementationOnce(() => config);
+
+    const instance = new Instance(config);
   });
 });
