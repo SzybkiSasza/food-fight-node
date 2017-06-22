@@ -19,9 +19,6 @@ export default class Instance {
     // Copy validated and enriched config
     this.config = validation.value;
 
-    // Indicates that the instance is not yet ready (has to be initialized)
-    this.isInitialized = false;
-
     // Initial transports list
     this.transports = [];
   }
@@ -36,12 +33,10 @@ export default class Instance {
         throw new Error(`Transport: ${transportConfig.name} not supported!`);
       }
 
-      const transportClass = transports[transportConfig.name];
-      const transportInstance = new transportClass(transportConfig);
+      const TransportClass = transports[transportConfig.name];
+      const transportInstance = new TransportClass(transportConfig);
       this.transports.push(await transportInstance.init());
     }
-
-    this.isInitialized = true;
   }
 
   async listen(commandName, handler, transports) {
