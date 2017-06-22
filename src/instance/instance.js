@@ -1,6 +1,6 @@
-import configSchema from './schemas/config';
-
 import * as transports from '../transports';
+
+import configSchema from './schemas/config';
 
 /**
  * Instance class - contains init code and transport - handling facets
@@ -29,13 +29,19 @@ export default class Instance {
   /**
    * Asynchronous initialization function.
    * Has to be called before using the instance
-   * @return {Promise} Result of the initialization
    */
   async init() {
-    for (let transport of this.config.transports) {
-      console.log(transports);
-      console.log(transport);
+    for (let transportConfig of this.config.transports) {
+      if (!transports[transportConfig.name]) {
+        throw new Error(`Transport: ${transportConfig.name} not supported!`);
+      }
+
+      const transportClass = transports[transportConfig.name];
+      const transportInstance = new transportClass(transportConfig);
+      this.transports.push(await transportInstance.init());
     }
+
+    this.isInitialized = true;
   }
 
   async listen(commandName, handler, transports) {
