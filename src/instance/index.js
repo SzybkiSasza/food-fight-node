@@ -4,11 +4,13 @@ let instance;
 
 /**
  * Initializes instance or returns existing one
- * @param  {Object}  config
+ * @param  {Object}  config   Input config
+ * @return {Promise}          Result of the initialization
  */
 export async function init(config) {
   if (!instance) {
     instance = new Instance(config);
+    return await instance.init();
   } else {
     throw new Error('Instance already initialized!');
   }

@@ -39,6 +39,7 @@ describe('Instance index', () => {
     });
 
     expect(Instance).toHaveBeenCalledTimes(1);
+    expect(Instance.mock.instances[0].init).toHaveBeenCalledTimes(1);
   });
 
   it('Throws an error on second initialization', async () => {
