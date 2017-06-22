@@ -1,1 +1,1 @@
-import * from './direct';
+export * from './direct';
