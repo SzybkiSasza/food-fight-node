@@ -20,7 +20,10 @@ export default class Instance {
     this.config = validation.value;
 
     // Initial transports list
-    this.transports = [];
+    this.transports = {};
+
+    // Flag whether the Instance is initialized or not
+    this.isInitialized = false;
   }
 
   /**
@@ -29,14 +32,18 @@ export default class Instance {
    */
   async init() {
     for (let transportConfig of this.config.transports) {
-      if (!transports[transportConfig.name]) {
-        throw new Error(`Transport: ${transportConfig.name} not supported!`);
+      const transportName = transportConfig.name;
+      if (!transports[transportName]) {
+        throw new Error(`Transport: ${transportName} not supported!`);
       }
 
-      const TransportClass = transports[transportConfig.name];
+      const TransportClass = transports[transportName];
       const transportInstance = new TransportClass(transportConfig);
-      this.transports.push(await transportInstance.init());
+
+      this.transports[transportName] = await transportInstance.init();
     }
+
+    this.isInitialized = true;
   }
 
   async listen(commandName, handler, transports) {

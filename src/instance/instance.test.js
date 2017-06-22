@@ -1,8 +1,9 @@
 jest.mock('../transports');
 jest.mock('./schemas/config');
 
-import configSchema from './schemas/config';
+import * as transports from '../transports';
 
+import configSchema from './schemas/config';
 import Instance from './instance';
 
 describe('Instance class tests', () => {
@@ -38,7 +39,7 @@ describe('Instance class tests', () => {
 
     const instance = new Instance(config);
 
-    expect(instance.transports.length).toEqual(0);
+    expect(instance.isInitialized).toEqual(false);
     expect(instance.config).toEqual(config);
   });
 
@@ -55,18 +56,25 @@ describe('Instance class tests', () => {
     };
     configSchema.validate.mockImplementationOnce(() => config);
 
+    let instance;
     try {
-      const instance = new Instance(config);
+      instance = new Instance(config);
       await instance.init();
 
       throw new Error('This should not be thrown');
     } catch (err) {
       expect(err).toBeInstanceOf(Error);
       expect(err.message).toEqual('Transport: invalid not supported!');
+
+      expect(instance.isInitialized).toEqual(false);
     }
   });
 
   it('Asynchronously adds all the transports', async () => {
+    transports.direct.prototype.init.mockImplementationOnce(async () => ({
+      some: 'transportInstanceHere',
+    }));
+
     const config = {
       value: {
         entityName: 'Nom',
@@ -80,6 +88,7 @@ describe('Instance class tests', () => {
     const instance = new Instance(config);
     await instance.init();
 
-    expect(instance.transports.length).toEqual(1);
+    expect(instance.transports.direct).toBeInstanceOf(Object);
+    expect(instance.isInitialized).toEqual(true);
   });
 });
