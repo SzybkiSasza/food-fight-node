@@ -109,4 +109,90 @@ describe('Instance class tests', () => {
       expect(instance.isInitialized).toEqual(true);
     });
   });
+
+  describe('Methods', () => {
+    let oldConsoleWarn = console.warn;
+
+    let instance;
+    let transportMocks = {
+      listen: jest.fn(),
+      call: jest.fn(),
+    };
+
+    beforeEach(async () => {
+      console.warn = jest.fn();
+
+      transports.direct.prototype.init.mockImplementationOnce(
+        async () => transportMocks);
+      transportMocks.listen.mockClear();
+      transportMocks.call.mockClear();
+
+      const config = {
+        value: {
+          entityName: 'FooFi',
+          transports: [{
+            name: 'direct',
+          }],
+        },
+      };
+      configSchema.validate.mockImplementationOnce(() => config);
+
+      instance = new Instance(config);
+      await instance.init();
+    });
+
+    afterAll(() => {
+      console.warn = oldConsoleWarn;
+    });
+
+    describe('Listen', () => {
+      it('Throws an error if no transport is passed in array', async () => {
+        try {
+          await instance.listen('someCommandName', () => {});
+          throw new Error('Not reached!');
+        } catch (err) {
+          expect(err.message).toEqual(
+            'At least one transport must be specified!');
+        }
+      });
+
+      it('Logs an error if transport is not initialized', async () => {
+        await instance.listen('someCommandName', () => {}, ['notExistingOne']);
+
+        expect(console.warn).toHaveBeenCalledTimes(1);
+        expect(console.warn).toHaveBeenCalledWith(
+          'Skipping transport notExistingOne, not initialized...');
+      });
+
+      it('Adds transport, if passed properly', async () => {
+        await instance.listen('someCommandName', () => {}, ['direct']);
+
+        expect(transportMocks.listen).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('Call', () => {
+      it('Should throw if transport is not initialized', async () => {
+        try {
+          await instance.call(
+            'someEntity', 'someCommand', 'notExistingOne', {});
+          throw new Error('Not reached!');
+        } catch (err) {
+            expect(err.message).toEqual(
+              'Transport notExistingOne not initialized yet!');
+        }
+      });
+
+      it('Calls transport instance and delegates the call', async () => {
+        await instance.call('someEntity', 'someCommand', 'direct', {
+          a: 'b',
+        });
+
+        expect(transportMocks.call).toHaveBeenCalledWith(
+          'someEntity', 'someCommand', {
+            a: 'b',
+        });
+      });
+    });
+  });
 });

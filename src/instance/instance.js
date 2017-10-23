@@ -54,15 +54,25 @@ export default class Instance {
    * Listens to a particular command
    * @param  {String}  commandName Command name
    * @param  {Function}  handler   Command handler
-   * @param  {Array}  transports   List of transports that will listen to the command
-   * @return {Promise}             [description]
+   * @param  {Array}  transports   List of transports that will listen
+   *                                to the command
+   * @return {Promise}             Result of initialization
    */
   async listen(commandName, handler, transports = []) {
-    if (!isArray(transports) || transports.length) {
+    if (!isArray(transports) || !transports.length) {
       throw new Error('At least one transport must be specified!');
     }
 
+    for (let transport of transports) {
+      const transportInstance = this.transports[transport];
+      // Skip the transport if it is not initialized
+      if (!transportInstance) {
+        return console.warn(
+          `Skipping transport ${transport}, not initialized...`);
+      }
 
+      await transportInstance.listen(commandName, handler);
+    }
   }
 
   /**
@@ -76,7 +86,7 @@ export default class Instance {
   async call(entity, commandName, transportType, body) {
     const transportInstance = this.transports[transportType];
     if (!transportInstance) {
-      throw new Error(`Transport ${transportType} not yet initialized!`);
+      throw new Error(`Transport ${transportType} not initialized yet!`);
     }
 
     return transportInstance.call(entity, commandName, body);
