@@ -1,3 +1,6 @@
+import {isArray} from 'lodash';
+import {v4 as uuidV4} from 'uuid';
+
 import * as transports from '../transports';
 
 import configSchema from './schemas/config';
@@ -43,14 +46,39 @@ export default class Instance {
       this.transports[transportName] = await transportInstance.init();
     }
 
+    this.id = uuidV4();
     this.isInitialized = true;
   }
 
-  async listen(commandName, handler, transports) {
+  /**
+   * Listens to a particular command
+   * @param  {String}  commandName Command name
+   * @param  {Function}  handler   Command handler
+   * @param  {Array}  transports   List of transports that will listen to the command
+   * @return {Promise}             [description]
+   */
+  async listen(commandName, handler, transports = []) {
+    if (!isArray(transports) || transports.length) {
+      throw new Error('At least one transport must be specified!');
+    }
+
 
   }
 
+  /**
+   * Calls particular transport to handle the message
+   * @param  {String}  entity        Entity name to call
+   * @param  {String}  commandName   Command name to invoke
+   * @param  {String}  transportType One of allowed transports
+   * @param  {Object}  body          Message body
+   * @return {Promise}               Result of the operation
+   */
   async call(entity, commandName, transportType, body) {
+    const transportInstance = this.transports[transportType];
+    if (!transportInstance) {
+      throw new Error(`Transport ${transportType} not yet initialized!`);
+    }
 
+    return transportInstance.call(entity, commandName, body);
   }
 }
