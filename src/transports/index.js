@@ -1,3 +1,5 @@
-import Direct from './direct';
+import DirectTransport from './direct';
 
-export default [Direct];
+export default {
+  [DirectTransport.name]: DirectTransport,
+};
