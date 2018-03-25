@@ -3,6 +3,18 @@ import Instance from './instance';
 let instance;
 
 /**
+ * Checks if instance is initialized
+ * @return {Error|Boolean} Error, if instance is not initialized
+ */
+function checkInstance() {
+  if (!instance) {
+    throw new Error('Instance not initialized!');
+  }
+
+  return true;
+}
+
+/**
  * Initializes instance or returns existing one
  * @param  {Object}  config   Input config
  * @return {Promise}          Result of the initialization
@@ -10,10 +22,9 @@ let instance;
 export async function init(config) {
   if (!instance) {
     instance = new Instance(config);
-    return await instance.init();
-  } else {
-    throw new Error('Instance already initialized!');
+    return instance.init();
   }
+  throw new Error('Instance already initialized!');
 }
 
 /**
@@ -25,7 +36,7 @@ export async function init(config) {
  */
 export async function listen(commandName, handler, transports) {
   checkInstance();
-  return await instance.listen(commandName, handler, transports);
+  return instance.listen(commandName, handler, transports);
 }
 
 /**
@@ -38,17 +49,5 @@ export async function listen(commandName, handler, transports) {
  */
 export async function call(entity, commandName, transportType, body) {
   checkInstance();
-  return await instance.call(entity, commandName, transportType, body);
-}
-
-/**
- * Checks if instance is initialized
- * @return {Error|Boolean} Error, if instance is not initialized
- */
-function checkInstance() {
-  if (!instance) {
-    throw new Error('Instance not initialized!');
-  }
-
-  return true;
+  return instance.call(entity, commandName, transportType, body);
 }

@@ -1,10 +1,16 @@
 /**
  * Direct transport - for intraprocess communication
  */
-export class direct {
-  constructor(config) {}
+export default class direct {
+  constructor(config) {
+    this.config = config;
+  }
 
-  async init() {}
+  async init() {
+    this.initialized = true;
+  }
 
-  async listen() {}
+  async listen() {
+    this.listening = true;
+  }
 }

@@ -1,5 +1,5 @@
-import {isArray} from 'lodash';
-import {v4 as uuidV4} from 'uuid';
+import { isArray } from 'lodash';
+import { v4 as uuidV4 } from 'uuid';
 
 import * as transports from '../transports';
 
@@ -34,7 +34,12 @@ export default class Instance {
    * Has to be called before using the instance
    */
   async init() {
-    for (let transportConfig of this.config.transports) {
+    if (!this.config.transports || !this.config.transports.length) {
+      throw new Error('No transports passed to init function!');
+    }
+
+    const transportPromises = [];
+    this.config.transports.forEach((transportConfig) => {
       const transportName = transportConfig.name;
       if (!transports[transportName]) {
         throw new Error(`Transport: ${transportName} not supported!`);
@@ -43,8 +48,13 @@ export default class Instance {
       const TransportClass = transports[transportName];
       const transportInstance = new TransportClass(transportConfig);
 
-      this.transports[transportName] = await transportInstance.init();
-    }
+      transportPromises.push(transportInstance.init());
+    });
+
+    const initializedTransports = Promise.all(transportPromises);
+    initializedTransports.forEach((initializedTransport) => {
+      console.log(initializedTransport) // eslint-disable-line
+    });
 
     this.id = uuidV4();
     this.isInitialized = true;
@@ -54,25 +64,28 @@ export default class Instance {
    * Listens to a particular command
    * @param  {String}  commandName Command name
    * @param  {Function}  handler   Command handler
-   * @param  {Array}  transports   List of transports that will listen
+   * @param  {Array}  transportNames   List of transports that will listen
    *                                to the command
    * @return {Promise}             Result of initialization
    */
-  async listen(commandName, handler, transports = []) {
-    if (!isArray(transports) || !transports.length) {
+  async listen(commandName, handler, transportNames = []) {
+    if (!isArray(transportNames) || !transportNames.length) {
       throw new Error('At least one transport must be specified!');
     }
 
-    for (let transport of transports) {
-      const transportInstance = this.transports[transport];
+    const transportPromises = [];
+    transportNames.forEach((transportName) => {
+      const transportInstance = this.transports[transportName];
+
       // Skip the transport if it is not initialized
       if (!transportInstance) {
-        return console.warn(
-          `Skipping transport ${transport}, not initialized...`);
+        return console.warn(`Skipping transport ${transportName}, not initialized...`);
       }
 
-      await transportInstance.listen(commandName, handler);
-    }
+      return transportPromises.push(transportInstance.listen(commandName, handler));
+    });
+
+    await Promise.all(transportPromises);
   }
 
   /**

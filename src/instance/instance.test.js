@@ -74,17 +74,17 @@ describe('Instance class tests', () => {
     });
 
     it('Initializes instance with new id', async () => {
-       const config = {
-          value: {
-            transports: [],
-          },
-       };
-       configSchema.validate.mockImplementationOnce(() => config);
+      const config = {
+        value: {
+          transports: [],
+        },
+      };
+      configSchema.validate.mockImplementationOnce(() => config);
 
-       const instance = new Instance(config);
-       await instance.init();
+      const instance = new Instance(config);
+      await instance.init();
 
-       expect(instance.id).toEqual(expect.any(String));
+      expect(instance.id).toEqual(expect.any(String));
     });
 
     it('Asynchronously adds all the transports', async () => {
@@ -111,10 +111,10 @@ describe('Instance class tests', () => {
   });
 
   describe('Methods', () => {
-    let oldConsoleWarn = console.warn;
+    const oldConsoleWarn = console.warn;
 
     let instance;
-    let transportMocks = {
+    const transportMocks = {
       listen: jest.fn(),
       call: jest.fn(),
     };
@@ -122,8 +122,7 @@ describe('Instance class tests', () => {
     beforeEach(async () => {
       console.warn = jest.fn();
 
-      transports.direct.prototype.init.mockImplementationOnce(
-        async () => transportMocks);
+      transports.direct.prototype.init.mockImplementationOnce(async () => transportMocks);
       transportMocks.listen.mockClear();
       transportMocks.call.mockClear();
 
@@ -151,8 +150,7 @@ describe('Instance class tests', () => {
           await instance.listen('someCommandName', () => {});
           throw new Error('Not reached!');
         } catch (err) {
-          expect(err.message).toEqual(
-            'At least one transport must be specified!');
+          expect(err.message).toEqual('At least one transport must be specified!');
         }
       });
 
@@ -160,8 +158,7 @@ describe('Instance class tests', () => {
         await instance.listen('someCommandName', () => {}, ['notExistingOne']);
 
         expect(console.warn).toHaveBeenCalledTimes(1);
-        expect(console.warn).toHaveBeenCalledWith(
-          'Skipping transport notExistingOne, not initialized...');
+        expect(console.warn).toHaveBeenCalledWith('Skipping transport notExistingOne, not initialized...');
       });
 
       it('Adds transport, if passed properly', async () => {
@@ -174,12 +171,10 @@ describe('Instance class tests', () => {
     describe('Call', () => {
       it('Should throw if transport is not initialized', async () => {
         try {
-          await instance.call(
-            'someEntity', 'someCommand', 'notExistingOne', {});
+          await instance.call('someEntity', 'someCommand', 'notExistingOne', {});
           throw new Error('Not reached!');
         } catch (err) {
-            expect(err.message).toEqual(
-              'Transport notExistingOne not initialized yet!');
+          expect(err.message).toEqual('Transport notExistingOne not initialized yet!');
         }
       });
 
@@ -188,9 +183,8 @@ describe('Instance class tests', () => {
           a: 'b',
         });
 
-        expect(transportMocks.call).toHaveBeenCalledWith(
-          'someEntity', 'someCommand', {
-            a: 'b',
+        expect(transportMocks.call).toHaveBeenCalledWith('someEntity', 'someCommand', {
+          a: 'b',
         });
       });
     });

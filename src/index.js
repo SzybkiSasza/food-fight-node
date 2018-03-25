@@ -1,4 +1,4 @@
-import {init, call, listen} from './instance';
+import { init, call, listen } from './instance';
 
 export {
   init,
