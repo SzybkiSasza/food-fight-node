@@ -2,7 +2,22 @@
   "name": "food-fight",
   "version": "0.0.1",
   "description": "Food Fight microservice lib!",
+  "keywords": [
+    "food-fight",
+    "library",
+    "microservice"
+  ],
+  "homepage": "https://github.com/SzybkiSasza/food-fight-node#readme",
+  "bugs": {
+    "url": "https://github.com/SzybkiSasza/food-fight-node/issues"
+  },
+  "license": "UNLICENSED",
+  "author": "Bartek Polanczyk",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SzybkiSasza/food-fight-node.git"
+  },
   "scripts": {
     "babel": "babel src -d lib --ignore *.test.js",
     "coverage": "jest --coverage",
@@ -11,37 +26,22 @@
     "start": "nodemon --exec babel-node src/index.js",
     "test": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SzybkiSasza/food-fight-node.git"
-  },
-  "keywords": [
-    "microservice",
-    "library",
-    "food-fight"
-  ],
-  "author": "Bartek Polanczyk",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/SzybkiSasza/food-fight-node/issues"
-  },
-  "homepage": "https://github.com/SzybkiSasza/food-fight-node#readme",
   "dependencies": {
-    "babel-runtime": "^6.23.0",
-    "joi": "^10.6.0",
-    "lodash": "^4.17.4",
-    "uuid": "^3.1.0"
+    "babel-runtime": "^6.26.0",
+    "joi": "^13.1.2",
+    "lodash": "^4.17.5",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "^20.0.3",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^22.4.3",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.5.2",
-    "eslint": "^4.0.0",
-    "eslint-config-google": "^0.8.0",
-    "jest": "^20.0.4",
-    "nodemon": "^1.11.0"
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "jest": "^22.4.3",
+    "nodemon": "^1.17.2"
   },
   "jest": {
     "testPathIgnorePatterns": [
