@@ -22,7 +22,15 @@ function checkInstance() {
 export async function init(config) {
   if (!instance) {
     instance = new Instance(config);
-    return instance.init();
+
+    try {
+      return await instance.init();
+    } catch (err) {
+      instance = null;
+
+      console.error('Instance initialization failed! Check your config');
+      throw err;
+    }
   }
 
   throw new Error('Food Fight instance is already initialized!');
