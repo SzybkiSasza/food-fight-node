@@ -8,7 +8,7 @@ let instance;
  */
 function checkInstance() {
   if (!instance) {
-    throw new Error('Instance not initialized!');
+    throw new Error('Food Fight instance is not initialized!');
   }
 
   return true;
@@ -24,7 +24,8 @@ export async function init(config) {
     instance = new Instance(config);
     return instance.init();
   }
-  throw new Error('Instance already initialized!');
+
+  throw new Error('Food Fight instance is already initialized!');
 }
 
 /**

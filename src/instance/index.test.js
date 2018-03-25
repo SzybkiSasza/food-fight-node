@@ -19,7 +19,7 @@ describe('Instance index', () => {
         await index.listen('cmdName', () => {}, ['direct']);
         throw new Error('This is not called');
       } catch (err) {
-        expect(err.message).toEqual('Instance not initialized!');
+        expect(err.message).toEqual('Food Fight instance is not initialized!');
       }
     },
   );
@@ -31,7 +31,7 @@ describe('Instance index', () => {
         await index.call('someEntity', 'cmdName', 'direct', { some: 'value' });
         throw new Error('This is not called');
       } catch (err) {
-        expect(err.message).toEqual('Instance not initialized!');
+        expect(err.message).toEqual('Food Fight instance is not initialized!');
       }
     },
   );
@@ -53,7 +53,7 @@ describe('Instance index', () => {
       });
       throw new Error('This is not called');
     } catch (err) {
-      expect(err.message).toEqual('Instance already initialized!');
+      expect(err.message).toEqual('Food Fight instance is already initialized!');
     }
   });
 

@@ -1,16 +1,22 @@
 jest.mock('./instance');
 
 import index from './';
-import {} from './index';
+import { init, call, listen } from './index';
 
 const indexRequire = require('./');
 
 describe('Main lib tests', () => {
-  it('Exposes default export', () => {
+  it('should expose default export', () => {
     expect(Object.keys(index)).toEqual(['init', 'call', 'listen']);
   });
 
-  it('Exposes conventional require-compatible library', () => {
+  it('should expose detructured methods', () => {
+    expect(init).toBeInstanceOf(Function);
+    expect(call).toBeInstanceOf(Function);
+    expect(listen).toBeInstanceOf(Function);
+  });
+
+  it('should expose conventional require-compatible library', () => {
     expect(Object.keys(indexRequire)).toEqual([
       'init',
       'call',
