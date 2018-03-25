@@ -158,7 +158,8 @@ describe('Instance class tests', () => {
   //       await instance.listen('someCommandName', () => {}, ['notExistingOne']);
   //
   //       expect(console.warn).toHaveBeenCalledTimes(1);
-  //       expect(console.warn).toHaveBeenCalledWith('Skipping transport notExistingOne, not initialized...');
+  //       expect(console.warn)
+  //        .toHaveBeenCalledWith('Skipping transport notExistingOne, not initialized...');
   //     });
   //
   //     it('Adds transport, if passed properly', async () => {
