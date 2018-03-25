@@ -4,7 +4,7 @@ node_js:
 cache:
   yarn: true
 install:
-- yarn i
+- yarn install
 script:
 - yarn lint
 - yarn codacy
