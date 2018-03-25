@@ -20,7 +20,7 @@
   },
   "scripts": {
     "babel": "babel src -d lib --ignore *.test.js",
-    "codacy": "codacy-coverage -p .",
+    "codacy": "cat ./coverage/lcov.info | codacy-coverage",
     "coverage": "jest --coverage",
     "lint": "eslint --fix src test",
     "prepublish": "npm run babel",
