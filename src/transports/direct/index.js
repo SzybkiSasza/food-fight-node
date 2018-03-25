@@ -5,4 +5,6 @@ export class direct {
   constructor(config) {}
 
   async init() {}
+
+  async listen() {}
 }
