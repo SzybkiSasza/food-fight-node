@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/SzybkiSasza/food-fight-node/issues"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "Bartek Polanczyk",
   "main": "lib/index.js",
   "repository": {

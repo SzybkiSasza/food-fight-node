@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+- 8.9.0
+cache:
+  yarn: true
+install:
+- yarn i
+script:
+- yarn lint
+- yarn codacy
+before_deploy:
+- yarn build
+deploy:
+  provider: npm
+  email: bartosz.polanczyk@gmail.com
+  api_key:
+    secure: DjXFA1/bK1jF9wTLW0FhEoXx77QFnBPaGYUhyl27M0RBQI2XIeYnI7sFwmezzoTZz314cbERsjpVPX6G8V2Ih/VHLCgz2Snxa/SFxq6Gz3qKUe755Lbg+OwQFDR5k86rjqd/uX2sCjwvgD+uo2iKxy9zP0Dp/f0G88pcP6AHL8wsg6P7NDtF7ySxDJxWlNW7QKISVUSozX0LpfhsJDSEyKhOIplqyitI++0X5kuVlgkc+THG6PQWzF4y8CLfgk0IW33T1Kl6DsZV4faj2L9nBSU2r/24NraIssc9NwO/6ycvJibDDbY5X7P0mxiXm64Y/KmL0uD1s5gPYjA7jWPaFybFL5ab5MUJOJJ60k3c7gsM36Ld1BkaWVCPv25MuOy+dhyA+Szd7xt7vCROUkpQ7t9543oodszLtLy4oOTW9OHaiXjQMAS76ds8aK7EU6XN5iijubLbRBqovjluQ+RDLfxeYGN8FLKQK3Ofbal+zetvW0q10jYoiGS5qiYHvI5U7hxYu3h6ioSY8FTxQ+3HemBRD+DGHya7GqDCLACZGAYWSUzE42boYcZfYt29qk4d8bqAZ/bZpPd1UflsVG8qzBg87huqbe8x1NEPx5I5B7Cwan8gi93Q0StFEwosyRyEaNeVnFe2xXvrGxU+EXvdl8W1mxzfNj7YH4H+So2BsF4=
+  on:
+    tags: true
+    repo: SzybkiSasza/food-fight-node
