@@ -1,7 +1,7 @@
 import { isArray } from 'lodash';
 import { v4 as uuidV4 } from 'uuid';
 
-import * as transports from '../transports';
+import transports from '../transports';
 
 import configSchema from './schemas/config';
 
@@ -35,12 +35,13 @@ export default class Instance {
    */
   async init() {
     if (!this.config.transports || !this.config.transports.length) {
-      throw new Error('No transports passed to init function!');
+      throw new Error('Food Fight - No transports in the config, cannot initialize!');
     }
 
     const transportPromises = [];
     this.config.transports.forEach((transportConfig) => {
       const transportName = transportConfig.name;
+
       if (!transports[transportName]) {
         throw new Error(`Transport: ${transportName} not supported!`);
       }
@@ -51,9 +52,10 @@ export default class Instance {
       transportPromises.push(transportInstance.init());
     });
 
-    const initializedTransports = Promise.all(transportPromises);
+    const initializedTransports = await Promise.all(transportPromises);
     initializedTransports.forEach((initializedTransport) => {
-      console.log(initializedTransport) // eslint-disable-line
+      const transportName = initializedTransport.name;
+      this.transports[transportName] = initializedTransport;
     });
 
     this.id = uuidV4();
