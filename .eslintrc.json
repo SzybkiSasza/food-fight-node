@@ -1,0 +1,25 @@
+{
+  "env": {
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/recommended"
+  ],
+  "overrides": [
+    {
+      "files": [ "**/*.test.js" ],
+      "rules": {
+        "import/first": 0,
+        "import/no-duplicates": 0,
+        "no-console": 0,
+        "no-new": 0
+      }
+    }
+  ],
+  "parser": "babel-eslint",
+  "plugins": ["jest"],
+  "root": true
+}

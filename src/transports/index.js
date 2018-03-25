@@ -1,1 +1,3 @@
-export * from './direct';
+import Direct from './direct';
+
+export default [Direct];

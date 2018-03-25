@@ -12,25 +12,29 @@ describe('Instance index', () => {
     expect(Object.keys(index)).toEqual(['init', 'listen', 'call']);
   });
 
-  it('Throws an error if listen is used before instance initialization',
-  async () => {
-    try {
-      await index.listen('cmdName', () => {}, ['direct']);
-      throw new Error('This is not called');
-    } catch (err) {
-      expect(err.message).toEqual('Instance not initialized!');
-    }
-  });
+  it(
+    'Throws an error if listen is used before instance initialization',
+    async () => {
+      try {
+        await index.listen('cmdName', () => {}, ['direct']);
+        throw new Error('This is not called');
+      } catch (err) {
+        expect(err.message).toEqual('Instance not initialized!');
+      }
+    },
+  );
 
-  it('Throws an error if call is used before instance initialization',
-  async () => {
-    try {
-      await index.call('someEntity', 'cmdName', 'direct', {some: 'value'});
-      throw new Error('This is not called');
-    } catch (err) {
-      expect(err.message).toEqual('Instance not initialized!');
-    }
-  });
+  it(
+    'Throws an error if call is used before instance initialization',
+    async () => {
+      try {
+        await index.call('someEntity', 'cmdName', 'direct', { some: 'value' });
+        throw new Error('This is not called');
+      } catch (err) {
+        expect(err.message).toEqual('Instance not initialized!');
+      }
+    },
+  );
 
   it('Initializes the instance', () => {
     index.init({
@@ -59,12 +63,9 @@ describe('Instance index', () => {
     instanceInstance.listen.mockClear();
 
     await index.listen('cmdName', () => {}, ['direct']);
-    await index.call('someEntity', 'cmdName', 'direct', {some: 'value'});
+    await index.call('someEntity', 'cmdName', 'direct', { some: 'value' });
 
-    expect(instanceInstance.listen).toHaveBeenCalledWith(
-      'cmdName', expect.any(Function), ['direct']
-    );
-    expect(instanceInstance.call).toBeCalledWith(
-      'someEntity', 'cmdName', 'direct', {some: 'value'});
+    expect(instanceInstance.listen).toHaveBeenCalledWith('cmdName', expect.any(Function), ['direct']);
+    expect(instanceInstance.call).toBeCalledWith('someEntity', 'cmdName', 'direct', { some: 'value' });
   });
 });

@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/SzybkiSasza/food-fight-node/issues"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "Bartek Polanczyk",
   "main": "lib/index.js",
   "repository": {
@@ -20,11 +20,13 @@
   },
   "scripts": {
     "babel": "babel src -d lib --ignore *.test.js",
+    "codacy": "cat ./coverage/lcov.info | codacy-coverage",
     "coverage": "jest --coverage",
     "lint": "eslint --fix src test",
     "prepublish": "npm run babel",
     "start": "nodemon --exec babel-node src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
@@ -38,8 +40,11 @@
     "babel-jest": "^22.4.3",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
+    "codacy-coverage": "^2.1.1",
     "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.15.0",
     "jest": "^22.4.3",
     "nodemon": "^1.17.2"
   },
