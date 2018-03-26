@@ -25,7 +25,7 @@ describe('Instance class tests', () => {
         throw new Error('This should not be thrown');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('Some Validation Error!');
+        expect(err.message).toEqual('[FoodFight Instance] Some Validation Error!');
       }
     });
 
@@ -68,7 +68,7 @@ describe('Instance class tests', () => {
         throw new Error('This should not be thrown');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('Food Fight - No transports in the config, cannot initialize!');
+        expect(err.message).toEqual('[FoodFight Instance] No transports in the config, cannot initialize!');
 
         expect(instance.isInitialized).toEqual(false);
       }
@@ -95,7 +95,7 @@ describe('Instance class tests', () => {
         throw new Error('This should not be thrown');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('Transport: invalid not supported!');
+        expect(err.message).toEqual('[FoodFight Instance] Transport: invalid not supported!');
 
         expect(instance.isInitialized).toEqual(false);
       }
@@ -169,7 +169,7 @@ describe('Instance class tests', () => {
           await instance.listen('someCommandName', () => {});
           throw new Error('Not reached!');
         } catch (err) {
-          expect(err.message).toEqual('At least one transport must be specified!');
+          expect(err.message).toEqual('[FoodFight Instance] At least one transport must be specified!');
         }
       });
 
@@ -178,7 +178,7 @@ describe('Instance class tests', () => {
 
         expect(console.warn).toHaveBeenCalledTimes(1);
         expect(console.warn)
-          .toHaveBeenCalledWith('Skipping transport notExistingOne, not initialized...');
+          .toHaveBeenCalledWith('[FoodFight Instance] Skipping transport notExistingOne, not initialized...');
       });
 
       it('Adds transport, if passed properly', async () => {
@@ -194,7 +194,7 @@ describe('Instance class tests', () => {
           await instance.call('someEntity', 'someCommand', 'notExistingOne', {});
           throw new Error('Not reached!');
         } catch (err) {
-          expect(err.message).toEqual('Transport notExistingOne not initialized yet!');
+          expect(err.message).toEqual('[FoodFight Instance] Transport notExistingOne not initialized yet!');
         }
       });
 

@@ -1,5 +1,7 @@
 import Instance from './instance';
 
+const errorPrefix = '[FoodFight Main]';
+
 let instance;
 
 /**
@@ -8,7 +10,7 @@ let instance;
  */
 function checkInstance() {
   if (!instance) {
-    throw new Error('Food Fight instance is not initialized!');
+    throw new Error(`${errorPrefix} Instance not initialized!`);
   }
 
   return true;
@@ -28,12 +30,12 @@ export async function init(config) {
     } catch (err) {
       instance = null;
 
-      console.error('Instance initialization failed! Check your config'); // eslint-disable-line no-console
+      console.error(`${errorPrefix} Instance initialization failed! Check your config`); // eslint-disable-line no-console
       throw err;
     }
   }
 
-  throw new Error('Food Fight instance is already initialized!');
+  throw new Error(`${errorPrefix} Instance already initialized!`);
 }
 
 /**

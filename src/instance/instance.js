@@ -2,8 +2,9 @@ import { isArray } from 'lodash';
 import { v4 as uuidV4 } from 'uuid';
 
 import transports from '../transports';
-
 import configSchema from './schemas/config';
+
+const errorPrefix = '[FoodFight Instance]';
 
 /**
  * Instance class - contains init code and transport - handling facets
@@ -16,6 +17,7 @@ export default class Instance {
   constructor(config) {
     const validation = configSchema.validate(config);
     if (validation.error) {
+      validation.error.message = `${errorPrefix} ${validation.error.message}`;
       throw validation.error;
     }
 
@@ -35,7 +37,7 @@ export default class Instance {
    */
   async init() {
     if (!this.config.transports || !this.config.transports.length) {
-      throw new Error('Food Fight - No transports in the config, cannot initialize!');
+      throw new Error(`${errorPrefix} No transports in the config, cannot initialize!`);
     }
 
     const transportPromises = [];
@@ -43,7 +45,7 @@ export default class Instance {
       const transportName = transportConfig.name;
 
       if (!transports[transportName]) {
-        throw new Error(`Transport: ${transportName} not supported!`);
+        throw new Error(`${errorPrefix} Transport: ${transportName} not supported!`);
       }
 
       const TransportClass = transports[transportName];
@@ -72,7 +74,7 @@ export default class Instance {
    */
   async listen(commandName, handler, transportNames = []) {
     if (!isArray(transportNames) || !transportNames.length) {
-      throw new Error('At least one transport must be specified!');
+      throw new Error(`${errorPrefix} At least one transport must be specified!`);
     }
 
     const transportPromises = [];
@@ -81,7 +83,7 @@ export default class Instance {
 
       // Skip the transport if it is not initialized
       if (!transportInstance) {
-        return console.warn(`Skipping transport ${transportName}, not initialized...`); // eslint-disable-line no-console
+        return console.warn(`${errorPrefix} Skipping transport ${transportName}, not initialized...`); // eslint-disable-line no-console
       }
 
       return transportPromises.push(transportInstance.listen(commandName, handler));
@@ -101,7 +103,7 @@ export default class Instance {
   async call(entity, commandName, transportType, body) {
     const transportInstance = this.transports[transportType];
     if (!transportInstance) {
-      throw new Error(`Transport ${transportType} not initialized yet!`);
+      throw new Error(`${errorPrefix} Transport ${transportType} not initialized yet!`);
     }
 
     return transportInstance.call(entity, commandName, body);
