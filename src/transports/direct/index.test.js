@@ -49,7 +49,7 @@ describe('Direct Transport', () => {
     });
 
     it('should add handler to the command map', () => {
-      
+
     });
   });
 });
