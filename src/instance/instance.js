@@ -81,7 +81,7 @@ export default class Instance {
 
       // Skip the transport if it is not initialized
       if (!transportInstance) {
-        return console.warn(`Skipping transport ${transportName}, not initialized...`);
+        return console.warn(`Skipping transport ${transportName}, not initialized...`); // eslint-disable-line no-console
       }
 
       return transportPromises.push(transportInstance.listen(commandName, handler));
