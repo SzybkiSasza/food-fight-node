@@ -101,6 +101,28 @@ describe('Instance class tests', () => {
       }
     });
 
+    it('should merge main config with specific config', async () => {
+      const instanceConfig = {
+        value: {
+          entityName: 'abc',
+          timeout: 1000,
+          transports: [{
+            name: 'direct',
+          }],
+        },
+      };
+      configSchema.validate.mockImplementationOnce(() => instanceConfig);
+
+      const instance = new Instance(instanceConfig);
+      await instance.init();
+
+      expect(instance.transports.direct.constructor).toHaveBeenCalledWith({
+        entityName: 'abc',
+        name: 'direct',
+        timeout: 1000,
+      });
+    });
+
     it('should initialize the instance with new id', async () => {
       const config = {
         value: {

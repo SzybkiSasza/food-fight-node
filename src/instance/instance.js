@@ -41,7 +41,8 @@ export default class Instance {
     }
 
     const transportPromises = [];
-    this.config.transports.forEach((transportConfig) => {
+    this.config.transports.forEach((initialConfig) => {
+      const transportConfig = Instance.mergeWithMainConfig(this.config, initialConfig);
       const transportName = transportConfig.name;
 
       if (!transports[transportName]) {
@@ -107,5 +108,16 @@ export default class Instance {
     }
 
     return transportInstance.call(entity, commandName, body);
+  }
+
+  /**
+   * Merges specific transport config with global config
+   * @param entityName
+   * @param timeout
+   * @param transportConfig
+   * @returns {{} & {entityName: *, timeout: *}}
+   */
+  static mergeWithMainConfig({ entityName, timeout }, transportConfig) {
+    return Object.assign({}, { entityName, timeout, ...transportConfig});
   }
 }
