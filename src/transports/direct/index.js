@@ -1,15 +1,43 @@
+import configSchema from './schemas/config';
+
+const errorPrefix = '[FoodFight: Direct Transport] ';
+
 /**
  * Direct transport - for intraprocess communication
  */
 export default class Direct {
   constructor(config) {
-    this.config = config;
+    const validation = configSchema.validate(config);
+    if (validation.error) {
+      validation.error.message = `${errorPrefix} ${validation.error.message}`;
+      throw validation.error;
+    }
+
+    // Copy validated and enriched config
+    this.config = validation.value;
 
     this.commandMap = new Map();
   }
 
-  async call() {
-    this.called = true;
+  /**
+   * Calls handler, pulling its instance from map and supplying body
+   * @param entity
+   * @param commandName
+   * @param body
+   * @returns {Promise<void>}
+   */
+  async call(entity, commandName, body) {
+    const thisEntityName = this.config.entityName;
+    if (entity !== thisEntityName) {
+      throw new Error(`${errorPrefix} Trying to call handler with wrong instance name: ${entity}`);
+    }
+
+    const handler = this.commandMap.get(thisEntityName + commandName);
+    if (!handler) {
+      throw new Error(`${errorPrefix} Handler was not yet added to transport: ${commandName}`);
+    }
+
+    return handler(body);
   }
 
   /**
@@ -29,10 +57,14 @@ export default class Direct {
   async listen(commandName, handler) {
     const existingHandler = this.commandMap.get('commandName');
     if (existingHandler) {
-      throw new Error('Trying to add new handler to existing command!');
+      throw new Error(`${errorPrefix} Trying to add new handler to existing command: ${commandName}`);
     }
 
-    this.commandMap.set(commandName, handler);
+    if (!(handler instanceof Function)) {
+      throw new Error(`${errorPrefix} Handler must be a function!`);
+    }
+
+    this.commandMap.set(this.config.entityName + commandName, handler);
   }
 
   get name() {
