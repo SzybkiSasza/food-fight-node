@@ -3,4 +3,4 @@ engines:
  duplication:
    enabled: true
    exclude_paths:
-     - '**.test.js'
+     - 'src/**.test.js'

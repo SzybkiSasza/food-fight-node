@@ -7,14 +7,14 @@ const errorPrefix = '[FoodFight: Direct Transport] ';
  */
 export default class Direct {
   constructor(config) {
-    const validation = configSchema.validate(config);
-    if (validation.error) {
-      validation.error.message = `${errorPrefix} ${validation.error.message}`;
-      throw validation.error;
+    const transportConfigValidation = configSchema.validate(config);
+    if (transportConfigValidation.error) {
+      transportConfigValidation.error.message = `${errorPrefix} ${transportConfigValidation.error.message}`;
+      throw transportConfigValidation.error;
     }
 
     // Copy validated and enriched config
-    this.config = validation.value;
+    this.config = transportConfigValidation.value;
 
     this.commandMap = new Map();
   }
