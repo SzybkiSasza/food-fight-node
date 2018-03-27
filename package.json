@@ -21,9 +21,9 @@
   "scripts": {
     "babel": "babel src -d lib --ignore *.test.js",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage",
-    "coverage": "jest --coverage",
+    "coverage": "jest --coverage --no-cache",
     "lint": "eslint --fix src test",
-    "prepublish": "npm run babel",
+    "prepublish": "yarn babel",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^22.4.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
