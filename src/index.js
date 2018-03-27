@@ -1,13 +1,14 @@
-import { init, call, listen } from './instance';
+import { init as instanceInit, call as instanceCall, listen as instanceListen } from './instance';
 
-export {
+// Exports for destructuring
+export const init = instanceInit;
+export const call = instanceCall;
+export const listen = instanceListen;
+
+const libraryMethods = {
   init,
   call,
   listen,
 };
 
-export default {
-  init,
-  call,
-  listen,
-};
+export default libraryMethods;

@@ -1,7 +1,7 @@
 jest.mock('./instance');
 
 import index from './';
-import { init, call, listen } from './index';
+import { init, call, listen } from './';
 
 const indexRequire = require('./');
 
