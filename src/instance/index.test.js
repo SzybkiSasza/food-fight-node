@@ -1,7 +1,7 @@
-jest.mock('./instance');
+jest.mock('instance/instance');
 
-import Instance from './instance';
-import * as index from './';
+import Instance from 'instance/instance';
+import * as index from 'instance/index';
 
 /**
  * Please note that this file tests singleton properties
@@ -56,8 +56,7 @@ describe('Instance index', () => {
         throw new Error('This is not called');
       } catch (err) {
         expect(err.message).toEqual('Init error!');
-        expect(console.error).toHaveBeenCalledWith(
-          '[FoodFight Main] Instance initialization failed! Check your config');
+        expect(console.error).toHaveBeenCalledWith('[FoodFight Main] Instance initialization failed! Check your config');
       }
     });
 

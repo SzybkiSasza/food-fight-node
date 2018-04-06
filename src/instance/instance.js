@@ -1,8 +1,8 @@
 import { isArray } from 'lodash';
 import { v4 as uuidV4 } from 'uuid';
 
-import transports from '../transports';
-import configSchema from './schemas/config';
+import transports from 'transports/index';
+import configSchema from 'instance/schemas/config';
 
 const errorPrefix = '[FoodFight Instance]';
 
@@ -118,6 +118,6 @@ export default class Instance {
    * @returns {{} & {entityName: *, timeout: *}}
    */
   static mergeWithMainConfig({ entityName, timeout }, transportConfig) {
-    return Object.assign({}, { entityName, timeout, ...transportConfig});
+    return Object.assign({}, { entityName, timeout, ...transportConfig });
   }
 }

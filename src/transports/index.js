@@ -1,4 +1,4 @@
-import DirectTransport from './direct';
+import DirectTransport from 'transports/direct';
 
 const transports = {
   [DirectTransport.name]: DirectTransport,

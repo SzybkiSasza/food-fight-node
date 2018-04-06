@@ -1,6 +1,9 @@
-import configSchema from './schemas/config';
+import Promise from 'bluebird';
 
-const errorPrefix = '[FoodFight: Direct Transport] ';
+import configSchema from 'transports/direct/schemas/config';
+import { TimeoutError } from 'errors';
+
+const errorPrefix = '[FoodFight: Direct Transport]';
 
 /**
  * Direct transport - for intraprocess communication
@@ -37,7 +40,7 @@ export default class Direct {
       throw new Error(`${errorPrefix} Handler was not yet added to transport: ${commandName}`);
     }
 
-    return handler(body);
+    return Promise.resolve(handler(body)).timeout(this.config.timeoutm);
   }
 
   /**

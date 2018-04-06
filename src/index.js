@@ -1,4 +1,8 @@
-import { init as instanceInit, call as instanceCall, listen as instanceListen } from './instance';
+import {
+  init as instanceInit,
+  call as instanceCall,
+  listen as instanceListen,
+} from 'instance/index';
 
 // Exports for destructuring
 export const init = instanceInit;

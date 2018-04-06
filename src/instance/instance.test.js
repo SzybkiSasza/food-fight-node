@@ -1,10 +1,12 @@
-jest.mock('../transports');
-jest.mock('./schemas/config');
+jest.mock('transports');
+jest.mock('instance/schemas/config');
 
-import transports from '../transports';
+import transports from 'transports/index';
 
-import configSchema from './schemas/config';
-import Instance from './instance';
+import configSchema from 'instance/schemas/config';
+import Instance from 'instance/instance';
+
+console.log(Instance);
 
 describe('Instance class tests', () => {
   it('Is a defined class', () => {

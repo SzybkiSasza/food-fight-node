@@ -1,9 +1,9 @@
-jest.mock('./instance');
+jest.mock('instance/index');
 
-import index from './';
-import { init, call, listen } from './';
+import index from './index';
+import { init, call, listen } from './index';
 
-const indexRequire = require('./');
+const indexRequire = require('./index');
 
 describe('Main lib tests', () => {
   it('should expose default export', () => {

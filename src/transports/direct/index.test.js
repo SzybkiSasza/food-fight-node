@@ -1,4 +1,4 @@
-import DirectTransport from './';
+import DirectTransport from 'transports/direct/index';
 
 describe('Direct Transport', () => {
   it('is a defined export', () => {
@@ -14,8 +14,7 @@ describe('Direct Transport', () => {
 
         throw new Error('This is not reached');
       } catch (err) {
-        expect(err.message).toMatch(
-          /\[FoodFight: Direct Transport\].*\["entityName" is required\]/);
+        expect(err.message).toMatch(/\[FoodFight: Direct Transport\].*\["entityName" is required\]/);
       }
     });
 
@@ -42,15 +41,41 @@ describe('Direct Transport', () => {
   });
 
   describe('Call', () => {
-    it('should throw if passed entity name is different than initial one', () => {
+    it('should throw if passed entity name is different than registered one', async () => {
+      const config = {
+        entityName: 'testEntity',
+      };
 
+      const direct = new DirectTransport(config);
+
+      try {
+        await direct.call('anotherEntity', 'someCommandName', {});
+        throw new Error('Not reached!');
+      } catch (err) {
+        expect(err.message).toEqual('[FoodFight: Direct Transport] Trying to call handler with wrong instance name: anotherEntity');
+      }
     });
 
-    it('should throw if handler is not yet initialized', () => {
+    it('should throw if handler is not yet initialized', async () => {
+      const config = {
+        entityName: 'entityName',
+      };
 
+      const direct = new DirectTransport(config);
+
+      try {
+        await direct.call('entityName', 'someCommandName', {});
+        throw new Error('Not reached!');
+      } catch (err) {
+        expect(err.message).toEqual('[FoodFight: Direct Transport] Handler was not yet added to transport: someCommandName');
+      }
     });
 
     it('should call handler and return the result', () => {
+
+    });
+
+    it('should throw specific error on timeout', () => {
 
     });
   });

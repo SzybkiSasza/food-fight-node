@@ -1,4 +1,4 @@
-import configSchema from './config';
+import configSchema from 'instance/schemas/config';
 
 describe('Init config schema', () => {
   it('Is a defined object', () => {

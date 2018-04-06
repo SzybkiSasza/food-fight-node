@@ -1,4 +1,4 @@
-import configSchema from './config';
+import configSchema from 'transports/direct/schemas/config';
 
 describe('Direct Transport Config Schema', () => {
   it('should be a defined export', () => {

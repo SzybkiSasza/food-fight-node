@@ -1,7 +1,7 @@
-jest.mock('./direct');
+jest.mock('transports/direct');
 
-import transportsIndex from './';
-import DirectTransport from './direct';
+import transportsIndex from 'transports';
+import DirectTransport from 'transports/direct';
 
 describe('Transports index', () => {
   it('should be a defined object', () => {

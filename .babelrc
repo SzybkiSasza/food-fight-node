@@ -8,6 +8,10 @@
     }],
     ["transform-object-rest-spread", {
       "useBuiltIns": true
+    }],
+    ["module-resolver", {
+      "root": ["./src"],
+      "extensions": [".js", ".json", ""]
     }]
   ],
   "presets": [
