@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 
 import configSchema from 'transports/direct/schemas/config';
-import { TimeoutError } from 'errors';
+// import { TimeoutError } from 'errors';
 
 const errorPrefix = '[FoodFight: Direct Transport]';
 

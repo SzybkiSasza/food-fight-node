@@ -15,6 +15,6 @@ class ExtendableError extends Error {
 }
 
 // Place any error classes here
-export class TimeoutError extends ExtendableError {}
 export class ServerError extends ExtendableError {}
+export class TimeoutError extends ExtendableError {}
 

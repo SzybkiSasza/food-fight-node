@@ -6,8 +6,6 @@ import transports from 'transports/index';
 import configSchema from 'instance/schemas/config';
 import Instance from 'instance/instance';
 
-console.log(Instance);
-
 describe('Instance class tests', () => {
   it('Is a defined class', () => {
     expect(Instance).toBeInstanceOf(Function);
