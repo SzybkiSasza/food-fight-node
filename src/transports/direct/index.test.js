@@ -7,15 +7,37 @@ describe('Direct Transport', () => {
 
   describe('Constructor', () => {
     it('should throw prefixed error if config is not valid', () => {
+      const config = {};
 
+      try {
+        new DirectTransport(config);
+
+        throw new Error('This is not reached');
+      } catch (err) {
+        expect(err.message).toMatch(
+          /\[FoodFight: Direct Transport\].*\["entityName" is required\]/);
+      }
     });
 
     it('should validate config and return it', () => {
+      const validConfig = {
+        entityName: 'testEntity',
+        timeout: 1000,
+      };
 
+      const transport = new DirectTransport(validConfig);
+      expect(transport.config).toEqual(validConfig);
     });
 
     it('should initialize transport instance', () => {
+      const config = {
+        entityName: 'testEntity2',
+        timeout: 100,
+      };
 
+      const transport = new DirectTransport(config);
+      expect(transport).toBeInstanceOf(DirectTransport);
+      expect(transport.commandMap).toBeInstanceOf(Map);
     });
   });
 
