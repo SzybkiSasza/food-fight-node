@@ -5,6 +5,14 @@ describe('Direct Transport', () => {
     expect(DirectTransport).toBeInstanceOf(Function);
   });
 
+  it('should return transport name', () => {
+    const direct = new DirectTransport({
+      entityName: 'testName',
+    });
+
+    expect(direct.name).toEqual('direct');
+  });
+
   describe('Constructor', () => {
     it('should throw prefixed error if config is not valid', () => {
       const config = {};
@@ -147,16 +155,41 @@ describe('Direct Transport', () => {
 
         throw new Error('This should not be reached');
       } catch (err) {
-        console.log(err);
+        expect(err.message)
+          .toEqual('[FoodFight: Direct Transport] Trying to add new handler to existing command: testCommand');
       }
     });
 
-    it('should throw if passed handler is not a function', () => {
+    it('should throw if passed handler is not a function', async () => {
+      const config = {
+        entityName: 'handlerErrorTest',
+      };
 
+      const direct = new DirectTransport(config);
+
+      try {
+        await direct.listen('testCommand', {});
+
+        throw new Error('This should not be reached');
+      } catch (err) {
+        expect(err.message)
+          .toEqual('[FoodFight: Direct Transport] Handler must be a function!');
+      }
     });
 
-    it('should add handler to the command map', () => {
+    it('should add handler to the command map', async () => {
+      const config = {
+        entityName: 'listenTest',
+      };
 
+      const direct = new DirectTransport(config);
+      const handler = jest.fn();
+
+      await direct.listen('testCommand', handler);
+
+      const map = direct.commandMap;
+      expect(map.size).toEqual(1);
+      expect(map.get('listenTest_testCommand')).toEqual(handler);
     });
   });
 });
