@@ -105,7 +105,7 @@ describe('Instance class tests', () => {
         instance = new Instance(unsupportedTransportConfig);
         await instance.init();
 
-        throw new Error('This should not be thrown');
+        throw new Error('This should not be reached');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toEqual('[FoodFight Instance] Transport: invalid not supported!');
