@@ -54,4 +54,6 @@ Demos folder contains examples on how to use different transports. For more deta
 
 As currently only Direct transport is supported, library may be used out-of-the box, without any additional Back End.
 
+If you want to build the library locally or run the demos, you will need [Yarn](https://yarnpkg.com) package manager (follow your platform instructions to get it installed)
+
 In the future, we recommend to start with default configurations of RabbitMQ and Consul (by using e.g. official Docker images).
