@@ -1,3 +1,7 @@
-import Direct from './direct';
+import DirectTransport from 'transports/direct/index';
 
-export default [Direct];
+const transports = {
+  [DirectTransport.name]: DirectTransport,
+};
+
+export default transports;
