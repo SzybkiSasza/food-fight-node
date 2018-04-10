@@ -46,23 +46,36 @@ describe('Instance class tests', () => {
   });
 
   describe('Init', () => {
+    let config;
+
     beforeEach(() => {
       transports.direct.prototype.init.mockReturnThis();
       transports.direct.prototype.name = 'direct'; // Mock getter
+
+      config = {
+        value: {
+          entityName: 'abc',
+          timeout: 1000,
+          transports: [{
+            name: 'direct',
+          }],
+        },
+      };
+      configSchema.validate.mockImplementation(() => config);
     });
 
     it('should throw an error if config does not contain any transports', async () => {
-      const config = {
+      const noTransportConfig = {
         value: {
           entityName: 'Nom',
           transports: [],
         },
       };
-      configSchema.validate.mockImplementationOnce(() => config);
+      configSchema.validate.mockImplementationOnce(() => noTransportConfig);
 
       let instance;
       try {
-        instance = new Instance(config);
+        instance = new Instance(noTransportConfig);
         await instance.init();
 
         throw new Error('This should not be thrown');
@@ -75,7 +88,7 @@ describe('Instance class tests', () => {
     });
 
     it('should throw if transport is not supported', async () => {
-      const config = {
+      const unsupportedTransportConfig = {
         value: {
           entityName: 'Nom',
           transports: [{
@@ -85,14 +98,14 @@ describe('Instance class tests', () => {
           }],
         },
       };
-      configSchema.validate.mockImplementationOnce(() => config);
+      configSchema.validate.mockImplementationOnce(() => unsupportedTransportConfig);
 
       let instance;
       try {
-        instance = new Instance(config);
+        instance = new Instance(unsupportedTransportConfig);
         await instance.init();
 
-        throw new Error('This should not be thrown');
+        throw new Error('This should not be reached');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toEqual('[FoodFight Instance] Transport: invalid not supported!');
@@ -102,18 +115,7 @@ describe('Instance class tests', () => {
     });
 
     it('should merge main config with specific config', async () => {
-      const instanceConfig = {
-        value: {
-          entityName: 'abc',
-          timeout: 1000,
-          transports: [{
-            name: 'direct',
-          }],
-        },
-      };
-      configSchema.validate.mockImplementationOnce(() => instanceConfig);
-
-      const instance = new Instance(instanceConfig);
+      const instance = new Instance(config);
       await instance.init();
 
       expect(instance.transports.direct.constructor).toHaveBeenCalledWith({
@@ -124,15 +126,6 @@ describe('Instance class tests', () => {
     });
 
     it('should initialize the instance with new id', async () => {
-      const config = {
-        value: {
-          transports: [{
-            name: 'direct',
-          }],
-        },
-      };
-      configSchema.validate.mockImplementationOnce(() => config);
-
       const instance = new Instance(config);
       await instance.init();
 
@@ -140,16 +133,6 @@ describe('Instance class tests', () => {
     });
 
     it('Asynchronously adds all the transports', async () => {
-      const config = {
-        value: {
-          entityName: 'Nom',
-          transports: [{
-            name: 'direct',
-          }],
-        },
-      };
-      configSchema.validate.mockImplementationOnce(() => config);
-
       const instance = new Instance(config);
       await instance.init();
 
