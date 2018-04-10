@@ -22,7 +22,7 @@
     "build": "babel src -d lib --ignore *.test.js",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage",
     "coverage": "jest --coverage --no-cache",
-    "lint": "eslint --fix src test",
+    "lint": "eslint --fix demos src",
     "prepublish": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch"
