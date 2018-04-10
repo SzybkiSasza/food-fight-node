@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 
 import configSchema from 'transports/direct/schemas/config';
-// import { TimeoutError } from 'errors';
+import { TimeoutError } from 'errors';
 
 const errorPrefix = '[FoodFight: Direct Transport]';
 
@@ -40,7 +40,9 @@ export default class Direct {
       throw new Error(`${errorPrefix} Handler was not yet added to transport: ${commandName}`);
     }
 
-    return Promise.resolve(handler(body)).timeout(this.config.timeoutm);
+    return Promise
+      .resolve(handler(body))
+      .timeout(this.config.timeout, new TimeoutError(`${errorPrefix} ${commandName} call timed out`));
   }
 
   /**
@@ -58,16 +60,19 @@ export default class Direct {
    * @returns {Promise<void>}
    */
   async listen(commandName, handler) {
-    const existingHandler = this.commandMap.get('commandName');
+    const key = `${this.config.entityName}_commandName`;
+    const existingHandler = this.commandMap.get(key);
+
+    console.log(existingHandler);
     if (existingHandler) {
       throw new Error(`${errorPrefix} Trying to add new handler to existing command: ${commandName}`);
     }
 
-    if (!(handler instanceof Function)) {
+    if (typeof handler !== 'function') {
       throw new Error(`${errorPrefix} Handler must be a function!`);
     }
 
-    this.commandMap.set(this.config.entityName + commandName, handler);
+    this.commandMap.set(key, handler);
   }
 
   get name() {
