@@ -14,23 +14,36 @@ const config = {
  * Pings the message
  */
 async function ping({ counter }) {
+  console.log(`Ping: ${counter}`);
   if (counter < 10) {
-    const result = await foodFight.call('PingPongTest', 'pong', 'direct', {
-      counter: counter || 0,
+    const updatedCounter = await foodFight.call('PingPongTest', 'pong', 'direct', {
+      counter,
     });
-    console.log(`Ping result: ${result}`);
-  } else {
-    console.log('Ping Pong finished');
+
+    console.log(`Counter after pong: ${updatedCounter}`);
+    return updatedCounter;
   }
+
+  console.log(`Final counter: ${counter}`);
+  return counter;
 }
 
 /**
  * Pongs the message and sometimes... Times out :)
  */
-async function pong() {
-  await Promise.delay
-  const result = await foodFight.call('PingPongTest', 'ping', 'direct', {});
-  console.log(`Pong result: ${result}`);
+async function pong({ counter }) {
+  console.log(`Pong: ${counter}`);
+
+  // Just delay it a little...
+  await Promise.delay(50);
+  const incrementedCounter = counter + 1;
+
+  const pingedCounter = await foodFight.call('PingPongTest', 'ping', 'direct', {
+    counter: incrementedCounter,
+  });
+
+  console.log(`Counter after ping: ${pingedCounter}`);
+  return pingedCounter;
 }
 
 async function run() {
