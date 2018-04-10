@@ -19,11 +19,11 @@
     "url": "git+https://github.com/SzybkiSasza/food-fight-node.git"
   },
   "scripts": {
-    "babel": "babel src -d lib --ignore *.test.js",
+    "build": "babel src -d lib --ignore *.test.js",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage",
     "coverage": "jest --coverage --no-cache",
     "lint": "eslint --fix src test",
-    "prepublish": "yarn babel",
+    "prepublish": "yarn build",
     "test": "jest",
     "test:watch": "jest --watch"
   },
