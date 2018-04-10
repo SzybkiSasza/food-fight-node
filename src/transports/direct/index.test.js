@@ -121,11 +121,34 @@ describe('Direct Transport', () => {
 
   describe('Init', () => {
     it('should return the same instance', async () => {
+      const config = {
+        entityName: 'initializedInstanceTest',
+      };
+
+      const direct = new DirectTransport(config);
+      const initialized = await direct.init();
+
+      expect(initialized).toEqual(direct);
     });
   });
 
   describe('Listen', () => {
-    it('should throw if handler is already assigned', () => {
+    it('should throw if handler is already assigned', async () => {
+      const config = {
+        entityName: 'handlerListen',
+      };
+      const handler = jest.fn();
+
+      const direct = new DirectTransport(config);
+      await direct.listen('testCommand', handler);
+
+      try {
+        await direct.listen('testCommand', handler);
+
+        throw new Error('This should not be reached');
+      } catch (err) {
+        console.log(err);
+      }
     });
 
     it('should throw if passed handler is not a function', () => {

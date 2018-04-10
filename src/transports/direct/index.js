@@ -22,6 +22,10 @@ export default class Direct {
     this.commandMap = new Map();
   }
 
+  getMapKey(commandName) {
+    return `${this.config.entityName}_${commandName}`;
+  }
+
   /**
    * Calls handler, pulling its instance from map and supplying body
    * @param entity
@@ -35,7 +39,8 @@ export default class Direct {
       throw new Error(`${errorPrefix} Trying to call handler with wrong instance name: ${entity}`);
     }
 
-    const handler = this.commandMap.get(thisEntityName + commandName);
+    const key = this.getMapKey(commandName);
+    const handler = this.commandMap.get(key);
     if (!handler) {
       throw new Error(`${errorPrefix} Handler was not yet added to transport: ${commandName}`);
     }
@@ -60,7 +65,7 @@ export default class Direct {
    * @returns {Promise<void>}
    */
   async listen(commandName, handler) {
-    const key = `${this.config.entityName}_commandName`;
+    const key = this.getMapKey(commandName);
     const existingHandler = this.commandMap.get(key);
 
     if (existingHandler) {
