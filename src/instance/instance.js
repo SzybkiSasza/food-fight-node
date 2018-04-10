@@ -1,9 +1,10 @@
-import {isArray} from 'lodash';
-import {v4 as uuidV4} from 'uuid';
+import { isArray } from 'lodash';
+import { v4 as uuidV4 } from 'uuid';
 
-import * as transports from '../transports';
+import transports from 'transports/index';
+import configSchema from 'instance/schemas/config';
 
-import configSchema from './schemas/config';
+const errorPrefix = '[FoodFight Instance]';
 
 /**
  * Instance class - contains init code and transport - handling facets
@@ -16,6 +17,7 @@ export default class Instance {
   constructor(config) {
     const validation = configSchema.validate(config);
     if (validation.error) {
+      validation.error.message = `${errorPrefix} ${validation.error.message}`;
       throw validation.error;
     }
 
@@ -34,17 +36,30 @@ export default class Instance {
    * Has to be called before using the instance
    */
   async init() {
-    for (let transportConfig of this.config.transports) {
+    if (!this.config.transports || !this.config.transports.length) {
+      throw new Error(`${errorPrefix} No transports in the config, cannot initialize!`);
+    }
+
+    const transportPromises = [];
+    this.config.transports.forEach((initialConfig) => {
+      const transportConfig = Instance.mergeWithMainConfig(this.config, initialConfig);
       const transportName = transportConfig.name;
+
       if (!transports[transportName]) {
-        throw new Error(`Transport: ${transportName} not supported!`);
+        throw new Error(`${errorPrefix} Transport: ${transportName} not supported!`);
       }
 
       const TransportClass = transports[transportName];
       const transportInstance = new TransportClass(transportConfig);
 
-      this.transports[transportName] = await transportInstance.init();
-    }
+      transportPromises.push(transportInstance.init());
+    });
+
+    const initializedTransports = await Promise.all(transportPromises);
+    initializedTransports.forEach((initializedTransport) => {
+      const transportName = initializedTransport.name;
+      this.transports[transportName] = initializedTransport;
+    });
 
     this.id = uuidV4();
     this.isInitialized = true;
@@ -54,25 +69,28 @@ export default class Instance {
    * Listens to a particular command
    * @param  {String}  commandName Command name
    * @param  {Function}  handler   Command handler
-   * @param  {Array}  transports   List of transports that will listen
+   * @param  {Array}  transportNames   List of transports that will listen
    *                                to the command
    * @return {Promise}             Result of initialization
    */
-  async listen(commandName, handler, transports = []) {
-    if (!isArray(transports) || !transports.length) {
-      throw new Error('At least one transport must be specified!');
+  async listen(commandName, handler, transportNames = []) {
+    if (!isArray(transportNames) || !transportNames.length) {
+      throw new Error(`${errorPrefix} At least one transport must be specified!`);
     }
 
-    for (let transport of transports) {
-      const transportInstance = this.transports[transport];
+    const transportPromises = [];
+    transportNames.forEach((transportName) => {
+      const transportInstance = this.transports[transportName];
+
       // Skip the transport if it is not initialized
       if (!transportInstance) {
-        return console.warn(
-          `Skipping transport ${transport}, not initialized...`);
+        return console.warn(`${errorPrefix} Skipping transport ${transportName}, not initialized...`); // eslint-disable-line no-console
       }
 
-      await transportInstance.listen(commandName, handler);
-    }
+      return transportPromises.push(transportInstance.listen(commandName, handler));
+    });
+
+    await Promise.all(transportPromises);
   }
 
   /**
@@ -86,9 +104,20 @@ export default class Instance {
   async call(entity, commandName, transportType, body) {
     const transportInstance = this.transports[transportType];
     if (!transportInstance) {
-      throw new Error(`Transport ${transportType} not initialized yet!`);
+      throw new Error(`${errorPrefix} Transport ${transportType} not initialized yet!`);
     }
 
     return transportInstance.call(entity, commandName, body);
+  }
+
+  /**
+   * Merges specific transport config with global config
+   * @param entityName
+   * @param timeout
+   * @param transportConfig
+   * @returns {{} & {entityName: *, timeout: *}}
+   */
+  static mergeWithMainConfig({ entityName, timeout }, transportConfig) {
+    return Object.assign({}, { entityName, timeout, ...transportConfig });
   }
 }
