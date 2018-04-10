@@ -63,7 +63,6 @@ export default class Direct {
     const key = `${this.config.entityName}_commandName`;
     const existingHandler = this.commandMap.get(key);
 
-    console.log(existingHandler);
     if (existingHandler) {
       throw new Error(`${errorPrefix} Trying to add new handler to existing command: ${commandName}`);
     }
