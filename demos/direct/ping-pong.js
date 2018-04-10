@@ -15,6 +15,8 @@ const config = {
  */
 async function ping({ counter }) {
   console.log(`Ping: ${counter}`);
+
+  // Ping-pong will stop after 10 cycles
   if (counter < 10) {
     const updatedCounter = await foodFight.call('PingPongTest', 'pong', 'direct', {
       counter,
@@ -24,6 +26,7 @@ async function ping({ counter }) {
     return updatedCounter;
   }
 
+  // This will be reached after recursion is finished
   console.log(`Final counter: ${counter}`);
   return counter;
 }
@@ -42,23 +45,27 @@ async function pong({ counter }) {
     counter: incrementedCounter,
   });
 
+  // This will be reached after recursion is finished
   console.log(`Counter after ping: ${pingedCounter}`);
   return pingedCounter;
 }
 
 async function run() {
+  // Initialize the lib
   await foodFight.init(config);
 
+  // Add both endpoints
   await foodFight.listen('ping', ping, ['direct']);
   await foodFight.listen('pong', pong, ['direct']);
 
+  // This will trigger recursive runs!
   await foodFight.call('PingPongTest', 'ping', 'direct', {
     counter: 0,
   });
 }
 
-// This actually triggers the neverending loop
 run().catch((err) => {
+  // This should show how timeout is caught in global context
   console.log('Error encountered!');
   console.log(err);
 });
