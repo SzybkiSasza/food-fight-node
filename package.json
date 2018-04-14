@@ -28,6 +28,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "amqp": "^0.2.6",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.1",
     "joi": "^13.1.2",
