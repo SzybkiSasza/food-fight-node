@@ -4,6 +4,8 @@
 
 # food-fight-node
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/SzybkiSasza/food-fight-node.svg)](https://greenkeeper.io/)
+
 A simple microservice library
 
 ## Motivation
