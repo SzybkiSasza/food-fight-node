@@ -14,6 +14,32 @@ export default class Bulk {
     this.config = transportConfigValidation.value;
   }
 
+  /**
+   * Calls handler, pulling its instance from map and supplying body
+   * @param entity
+   * @param commandName
+   * @param body
+   * @returns {Promise<void>}
+   */
+  async call(entity, commandName, body) {
+  }
+
+  /**
+   * Initialized communication with external service (RabbitMQ).
+   * @returns {Promise<void>}
+   */
+  async init() {
+  }
+
+  /**
+   * Adds new handler to direct handlers map
+   * @param commandName
+   * @param handler
+   * @returns {Promise<void>}
+   */
+  async listen(commandName, handler) {
+  }
+
   get name() {
     return this.constructor.name;
   }
