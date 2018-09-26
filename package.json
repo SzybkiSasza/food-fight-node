@@ -2,6 +2,9 @@
   "name": "food-fight",
   "version": "0.1.4",
   "description": "Food Fight microservice lib!",
+  "engines": {
+    "node": "8.10.0"
+  },
   "keywords": [
     "food-fight",
     "library",
