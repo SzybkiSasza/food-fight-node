@@ -12,7 +12,7 @@ describe('Transports index', () => {
   });
 
   it('should expose two transports', () => {
-    expect(Object.keys(transportsIndex).length).toEqual(2);
+    expect(Object.keys(transportsIndex)).toHaveLength(2);
     expect(transportsIndex.direct).toEqual(DirectTransport);
     expect(transportsIndex.bulk).toEqual(BulkTransport);
   });

@@ -5,9 +5,11 @@ const foodFight = require('../../lib');
 const config = {
   entityName: 'PingPongTest',
   timeout: 500,
-  transports: [{
-    name: 'direct',
-  }],
+  transports: [
+    {
+      name: 'direct',
+    },
+  ],
 };
 
 /**
@@ -18,9 +20,14 @@ async function ping({ counter }) {
 
   // Ping-pong will stop after 10 cycles
   if (counter < 10) {
-    const updatedCounter = await foodFight.call('PingPongTest', 'pong', 'direct', {
-      counter,
-    });
+    const updatedCounter = await foodFight.call(
+      'PingPongTest',
+      'pong',
+      'direct',
+      {
+        counter,
+      },
+    );
 
     console.log(`Counter after pong: ${updatedCounter}`);
     return updatedCounter;
@@ -64,7 +71,7 @@ async function run() {
   });
 }
 
-run().catch((err) => {
+run().catch(err => {
   // This should show how timeout is caught in global context
   console.log('Error encountered!');
   console.log(err);

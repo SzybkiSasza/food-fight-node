@@ -19,16 +19,19 @@ describe('Init config schema', () => {
     });
 
     expect(validation.error).toBeInstanceOf(Error);
-    expect(validation.error.message)
-      .toMatch('["transports" must contain at least 1 items]');
+    expect(validation.error.message).toMatch(
+      '["transports" must contain at least 1 items]',
+    );
   });
 
   it('Throws an error if incorrect transport name is passed', () => {
     const config = {
       entityName: 'Users',
-      transports: [{
-        name: 'randomName',
-      }],
+      transports: [
+        {
+          name: 'randomName',
+        },
+      ],
       timeout: 3000,
       debug: true,
     };
@@ -36,33 +39,40 @@ describe('Init config schema', () => {
     const validation = configSchema.validate(config);
 
     expect(validation.error).toBeInstanceOf(Error);
-    expect(validation.error.message)
-      .toMatch('["name" must be one of [direct]]]');
+    expect(validation.error.message).toMatch(
+      '["name" must be one of [direct]]]',
+    );
   });
 
   it('Sets default timeout and debug', () => {
     const config = {
       entityName: 'Users',
-      transports: [{
-        name: 'direct',
-      }],
+      transports: [
+        {
+          name: 'direct',
+        },
+      ],
     };
 
     const validation = configSchema.validate(config);
 
     expect(validation.error).toBeFalsy();
-    expect(validation.value).toEqual(expect.objectContaining({
-      debug: false,
-      timeout: 10000,
-    }));
+    expect(validation.value).toEqual(
+      expect.objectContaining({
+        debug: false,
+        timeout: 10000,
+      }),
+    );
   });
 
   it('Allows to pass debug flag', () => {
     const config = {
       entityName: 'Users',
-      transports: [{
-        name: 'direct',
-      }],
+      transports: [
+        {
+          name: 'direct',
+        },
+      ],
       timeout: 3000,
       debug: true,
     };

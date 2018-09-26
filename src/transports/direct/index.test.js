@@ -22,7 +22,9 @@ describe('Direct Transport', () => {
 
         throw new Error('This is not reached');
       } catch (err) {
-        expect(err.message).toMatch(/\[FoodFight: Direct Transport\].*\["entityName" is required\]/);
+        expect(err.message).toMatch(
+          /\[FoodFight: Direct Transport\].*\["entityName" is required\]/,
+        );
       }
     });
 
@@ -60,7 +62,9 @@ describe('Direct Transport', () => {
         await direct.call('anotherEntity', 'someCommandName', {});
         throw new Error('Not reached!');
       } catch (err) {
-        expect(err.message).toEqual('[FoodFight: Direct Transport] Trying to call handler with wrong instance name: anotherEntity');
+        expect(err.message).toEqual(
+          '[FoodFight: Direct Transport] Trying to call handler with wrong instance name: anotherEntity',
+        );
       }
     });
 
@@ -75,7 +79,9 @@ describe('Direct Transport', () => {
         await direct.call('entityName', 'someCommandName', {});
         throw new Error('Not reached!');
       } catch (err) {
-        expect(err.message).toEqual('[FoodFight: Direct Transport] Handler was not yet added to transport: someCommandName');
+        expect(err.message).toEqual(
+          '[FoodFight: Direct Transport] Handler was not yet added to transport: someCommandName',
+        );
       }
     });
 
@@ -109,11 +115,14 @@ describe('Direct Transport', () => {
       };
 
       const direct = new DirectTransport(config);
-      const handler = jest.fn(() => new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 10);
-      }));
+      const handler = jest.fn(
+        () =>
+          new Promise(resolve => {
+            setTimeout(() => {
+              resolve();
+            }, 10);
+          }),
+      );
 
       await direct.listen('testEndpoint', handler);
 
@@ -122,7 +131,9 @@ describe('Direct Transport', () => {
 
         throw new Error('This should not be reached');
       } catch (err) {
-        expect(err.message).toEqual('[FoodFight: Direct Transport] testEndpoint call timed out');
+        expect(err.message).toEqual(
+          '[FoodFight: Direct Transport] testEndpoint call timed out',
+        );
       }
     });
   });
@@ -155,8 +166,9 @@ describe('Direct Transport', () => {
 
         throw new Error('This should not be reached');
       } catch (err) {
-        expect(err.message)
-          .toEqual('[FoodFight: Direct Transport] Trying to add new handler to existing command: testCommand');
+        expect(err.message).toEqual(
+          '[FoodFight: Direct Transport] Trying to add new handler to existing command: testCommand',
+        );
       }
     });
 
@@ -172,8 +184,9 @@ describe('Direct Transport', () => {
 
         throw new Error('This should not be reached');
       } catch (err) {
-        expect(err.message)
-          .toEqual('[FoodFight: Direct Transport] Handler must be a function!');
+        expect(err.message).toEqual(
+          '[FoodFight: Direct Transport] Handler must be a function!',
+        );
       }
     });
 

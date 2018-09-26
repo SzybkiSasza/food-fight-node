@@ -30,7 +30,9 @@ export async function init(config) {
     } catch (err) {
       instance = null;
 
-      console.error(`${errorPrefix} Instance initialization failed! Check your config`); // eslint-disable-line no-console
+      console.error(
+        `${errorPrefix} Instance initialization failed! Check your config`,
+      ); // eslint-disable-line no-console
       throw err;
     }
   }

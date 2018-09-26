@@ -22,7 +22,9 @@ describe('Direct Transport', () => {
 
         throw new Error('Not reached');
       } catch (err) {
-        expect(err.message).toMatch(/\[FoodFight: Bulk Transport\].*\["entityName" is required\]/);
+        expect(err.message).toMatch(
+          /\[FoodFight: Bulk Transport\].*\["entityName" is required\]/,
+        );
       }
     });
 

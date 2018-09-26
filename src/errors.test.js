@@ -21,7 +21,8 @@ describe('Extendable errors', () => {
     try {
       const timeoutError = new Errors.TimeoutError('testPhrase');
       expect(timeoutError.stack).toBeDefined();
-    } finally { // To prevent changing default error behaviour
+    } finally {
+      // To prevent changing default error behaviour
       Error.captureStackTrace = oldCTS;
     }
   });

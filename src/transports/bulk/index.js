@@ -6,7 +6,9 @@ export default class Bulk {
   constructor(config) {
     const transportConfigValidation = configSchema.validate(config);
     if (transportConfigValidation.error) {
-      transportConfigValidation.error.message = `${errorPrefix} ${transportConfigValidation.error.message}`;
+      transportConfigValidation.error.message = `${errorPrefix} ${
+        transportConfigValidation.error.message
+      }`;
       throw transportConfigValidation.error;
     }
 
@@ -21,15 +23,13 @@ export default class Bulk {
    * @param body
    * @returns {Promise<void>}
    */
-  async call(entity, commandName, body) {
-  }
+  async call(entity, commandName, body) {}
 
   /**
    * Initialized communication with external service (RabbitMQ).
    * @returns {Promise<void>}
    */
-  async init() {
-  }
+  async init() {}
 
   /**
    * Adds new handler to direct handlers map
@@ -37,8 +37,7 @@ export default class Bulk {
    * @param handler
    * @returns {Promise<void>}
    */
-  async listen(commandName, handler) {
-  }
+  async listen(commandName, handler) {}
 
   get name() {
     return this.constructor.name;

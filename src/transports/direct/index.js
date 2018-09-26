@@ -12,7 +12,9 @@ export default class Direct {
   constructor(config) {
     const transportConfigValidation = configSchema.validate(config);
     if (transportConfigValidation.error) {
-      transportConfigValidation.error.message = `${errorPrefix} ${transportConfigValidation.error.message}`;
+      transportConfigValidation.error.message = `${errorPrefix} ${
+        transportConfigValidation.error.message
+      }`;
       throw transportConfigValidation.error;
     }
 
@@ -36,18 +38,23 @@ export default class Direct {
   async call(entity, commandName, body) {
     const thisEntityName = this.config.entityName;
     if (entity !== thisEntityName) {
-      throw new Error(`${errorPrefix} Trying to call handler with wrong instance name: ${entity}`);
+      throw new Error(
+        `${errorPrefix} Trying to call handler with wrong instance name: ${entity}`,
+      );
     }
 
     const key = this.getMapKey(commandName);
     const handler = this.commandMap.get(key);
     if (!handler) {
-      throw new Error(`${errorPrefix} Handler was not yet added to transport: ${commandName}`);
+      throw new Error(
+        `${errorPrefix} Handler was not yet added to transport: ${commandName}`,
+      );
     }
 
-    return Promise
-      .resolve(handler(body))
-      .timeout(this.config.timeout, new TimeoutError(`${errorPrefix} ${commandName} call timed out`));
+    return Promise.resolve(handler(body)).timeout(
+      this.config.timeout,
+      new TimeoutError(`${errorPrefix} ${commandName} call timed out`),
+    );
   }
 
   /**
@@ -69,7 +76,9 @@ export default class Direct {
     const existingHandler = this.commandMap.get(key);
 
     if (existingHandler) {
-      throw new Error(`${errorPrefix} Trying to add new handler to existing command: ${commandName}`);
+      throw new Error(
+        `${errorPrefix} Trying to add new handler to existing command: ${commandName}`,
+      );
     }
 
     if (typeof handler !== 'function') {
