@@ -49,14 +49,18 @@ describe('Instance index', () => {
     });
 
     it('should catch init error from the instance', async () => {
-      Instance.prototype.init.mockImplementationOnce(() => Promise.reject(new Error('Init error!')));
+      Instance.prototype.init.mockImplementationOnce(() =>
+        Promise.reject(new Error('Init error!')),
+      );
 
       try {
         await index.init();
         throw new Error('This is not called');
       } catch (err) {
         expect(err.message).toEqual('Init error!');
-        expect(console.error).toHaveBeenCalledWith('[FoodFight Main] Instance initialization failed! Check your config');
+        expect(console.error).toHaveBeenCalledWith(
+          '[FoodFight Main] Instance initialization failed! Check your config',
+        );
       }
     });
 
@@ -79,7 +83,9 @@ describe('Instance index', () => {
         });
         throw new Error('This is not called');
       } catch (err) {
-        expect(err.message).toEqual('[FoodFight Main] Instance already initialized!');
+        expect(err.message).toEqual(
+          '[FoodFight Main] Instance already initialized!',
+        );
       }
     });
   });
@@ -92,7 +98,16 @@ describe('Instance index', () => {
     await index.listen('cmdName', () => {}, ['direct']);
     await index.call('someEntity', 'cmdName', 'direct', { some: 'value' });
 
-    expect(instanceInstance.listen).toHaveBeenCalledWith('cmdName', expect.any(Function), ['direct']);
-    expect(instanceInstance.call).toBeCalledWith('someEntity', 'cmdName', 'direct', { some: 'value' });
+    expect(instanceInstance.listen).toHaveBeenCalledWith(
+      'cmdName',
+      expect.any(Function),
+      ['direct'],
+    );
+    expect(instanceInstance.call).toBeCalledWith(
+      'someEntity',
+      'cmdName',
+      'direct',
+      { some: 'value' },
+    );
   });
 });

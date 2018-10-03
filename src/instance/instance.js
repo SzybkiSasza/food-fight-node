@@ -37,16 +37,23 @@ export default class Instance {
    */
   async init() {
     if (!this.config.transports || !this.config.transports.length) {
-      throw new Error(`${errorPrefix} No transports in the config, cannot initialize!`);
+      throw new Error(
+        `${errorPrefix} No transports in the config, cannot initialize!`,
+      );
     }
 
     const transportPromises = [];
-    this.config.transports.forEach((initialConfig) => {
-      const transportConfig = Instance.mergeWithMainConfig(this.config, initialConfig);
+    this.config.transports.forEach(initialConfig => {
+      const transportConfig = Instance.mergeWithMainConfig(
+        this.config,
+        initialConfig,
+      );
       const transportName = transportConfig.name;
 
       if (!transports[transportName]) {
-        throw new Error(`${errorPrefix} Transport: ${transportName} not supported!`);
+        throw new Error(
+          `${errorPrefix} Transport: ${transportName} not supported!`,
+        );
       }
 
       const TransportClass = transports[transportName];
@@ -56,7 +63,7 @@ export default class Instance {
     });
 
     const initializedTransports = await Promise.all(transportPromises);
-    initializedTransports.forEach((initializedTransport) => {
+    initializedTransports.forEach(initializedTransport => {
       const transportName = initializedTransport.name;
       this.transports[transportName] = initializedTransport;
     });
@@ -75,19 +82,25 @@ export default class Instance {
    */
   async listen(commandName, handler, transportNames = []) {
     if (!isArray(transportNames) || !transportNames.length) {
-      throw new Error(`${errorPrefix} At least one transport must be specified!`);
+      throw new Error(
+        `${errorPrefix} At least one transport must be specified!`,
+      );
     }
 
     const transportPromises = [];
-    transportNames.forEach((transportName) => {
+    transportNames.forEach(transportName => {
       const transportInstance = this.transports[transportName];
 
       // Skip the transport if it is not initialized
       if (!transportInstance) {
-        return console.warn(`${errorPrefix} Skipping transport ${transportName}, not initialized...`); // eslint-disable-line no-console
+        return console.warn(
+          `${errorPrefix} Skipping transport ${transportName}, not initialized...`,
+        ); // eslint-disable-line no-console
       }
 
-      return transportPromises.push(transportInstance.listen(commandName, handler));
+      return transportPromises.push(
+        transportInstance.listen(commandName, handler),
+      );
     });
 
     await Promise.all(transportPromises);
@@ -104,7 +117,9 @@ export default class Instance {
   async call(entity, commandName, transportType, body) {
     const transportInstance = this.transports[transportType];
     if (!transportInstance) {
-      throw new Error(`${errorPrefix} Transport ${transportType} not initialized yet!`);
+      throw new Error(
+        `${errorPrefix} Transport ${transportType} not initialized yet!`,
+      );
     }
 
     return transportInstance.call(entity, commandName, body);

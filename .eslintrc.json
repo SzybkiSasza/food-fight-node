@@ -6,7 +6,8 @@
   },
   "extends": [
     "airbnb-base",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "prettier"
   ],
   "overrides": [
     {
@@ -20,8 +21,14 @@
     }
   ],
   "parser": "babel-eslint",
-  "plugins": ["jest"],
+  "plugins": [
+    "jest",
+    "prettier"
+  ],
   "root": true,
+  "rules": {
+    "prettier/prettier": "error"
+  },
   "settings": {
     "import/resolver": {
       "babel-module": {}

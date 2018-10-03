@@ -25,7 +25,9 @@ describe('Instance class tests', () => {
         throw new Error('This should not be thrown');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('[FoodFight Instance] Some Validation Error!');
+        expect(err.message).toEqual(
+          '[FoodFight Instance] Some Validation Error!',
+        );
       }
     });
 
@@ -56,9 +58,11 @@ describe('Instance class tests', () => {
         value: {
           entityName: 'abc',
           timeout: 1000,
-          transports: [{
-            name: 'direct',
-          }],
+          transports: [
+            {
+              name: 'direct',
+            },
+          ],
         },
       };
       configSchema.validate.mockImplementation(() => config);
@@ -81,7 +85,9 @@ describe('Instance class tests', () => {
         throw new Error('This should not be thrown');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('[FoodFight Instance] No transports in the config, cannot initialize!');
+        expect(err.message).toEqual(
+          '[FoodFight Instance] No transports in the config, cannot initialize!',
+        );
 
         expect(instance.isInitialized).toEqual(false);
       }
@@ -91,14 +97,19 @@ describe('Instance class tests', () => {
       const unsupportedTransportConfig = {
         value: {
           entityName: 'Nom',
-          transports: [{
-            name: 'direct',
-          }, {
-            name: 'invalid',
-          }],
+          transports: [
+            {
+              name: 'direct',
+            },
+            {
+              name: 'invalid',
+            },
+          ],
         },
       };
-      configSchema.validate.mockImplementationOnce(() => unsupportedTransportConfig);
+      configSchema.validate.mockImplementationOnce(
+        () => unsupportedTransportConfig,
+      );
 
       let instance;
       try {
@@ -108,7 +119,9 @@ describe('Instance class tests', () => {
         throw new Error('This should not be reached');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
-        expect(err.message).toEqual('[FoodFight Instance] Transport: invalid not supported!');
+        expect(err.message).toEqual(
+          '[FoodFight Instance] Transport: invalid not supported!',
+        );
 
         expect(instance.isInitialized).toEqual(false);
       }
@@ -153,9 +166,11 @@ describe('Instance class tests', () => {
       const config = {
         value: {
           entityName: 'FooFi',
-          transports: [{
-            name: 'direct',
-          }],
+          transports: [
+            {
+              name: 'direct',
+            },
+          ],
         },
       };
       configSchema.validate.mockImplementationOnce(() => config);
@@ -174,7 +189,9 @@ describe('Instance class tests', () => {
           await instance.listen('someCommandName', () => {});
           throw new Error('Not reached!');
         } catch (err) {
-          expect(err.message).toEqual('[FoodFight Instance] At least one transport must be specified!');
+          expect(err.message).toEqual(
+            '[FoodFight Instance] At least one transport must be specified!',
+          );
         }
       });
 
@@ -182,8 +199,9 @@ describe('Instance class tests', () => {
         await instance.listen('someCommandName', () => {}, ['notExistingOne']);
 
         expect(console.warn).toHaveBeenCalledTimes(1);
-        expect(console.warn)
-          .toHaveBeenCalledWith('[FoodFight Instance] Skipping transport notExistingOne, not initialized...');
+        expect(console.warn).toHaveBeenCalledWith(
+          '[FoodFight Instance] Skipping transport notExistingOne, not initialized...',
+        );
       });
 
       it('Adds transport, if passed properly', async () => {
@@ -196,10 +214,17 @@ describe('Instance class tests', () => {
     describe('Call', () => {
       it('Should throw if transport is not initialized', async () => {
         try {
-          await instance.call('someEntity', 'someCommand', 'notExistingOne', {});
+          await instance.call(
+            'someEntity',
+            'someCommand',
+            'notExistingOne',
+            {},
+          );
           throw new Error('Not reached!');
         } catch (err) {
-          expect(err.message).toEqual('[FoodFight Instance] Transport notExistingOne not initialized yet!');
+          expect(err.message).toEqual(
+            '[FoodFight Instance] Transport notExistingOne not initialized yet!',
+          );
         }
       });
 
@@ -208,9 +233,13 @@ describe('Instance class tests', () => {
           a: 'b',
         });
 
-        expect(transports.direct.prototype.call).toHaveBeenCalledWith('someEntity', 'someCommand', {
-          a: 'b',
-        });
+        expect(transports.direct.prototype.call).toHaveBeenCalledWith(
+          'someEntity',
+          'someCommand',
+          {
+            a: 'b',
+          },
+        );
       });
     });
   });

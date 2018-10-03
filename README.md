@@ -4,6 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfd36a1f0f0240dcaef6da08d7eef8ca)](https://www.codacy.com/app/SzybkiSasza/food-fight-node?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SzybkiSasza/food-fight-node&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/bfd36a1f0f0240dcaef6da08d7eef8ca)](https://www.codacy.com/app/SzybkiSasza/food-fight-node?utm_source=github.com&utm_medium=referral&utm_content=SzybkiSasza/food-fight-node&utm_campaign=Badge_Coverage)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SzybkiSasza/food-fight-node.svg)](https://greenkeeper.io/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 A simple microservice library
 
