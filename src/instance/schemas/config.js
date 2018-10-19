@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 const transport = Joi.object().keys({
   name: Joi.string()
-    .valid(['direct'])
+    .valid(['direct', 'bulk'])
     .required(),
 });
 
