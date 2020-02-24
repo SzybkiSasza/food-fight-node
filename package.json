@@ -36,7 +36,7 @@
     "bluebird": "^3.5.2",
     "joi": "^13.7.0",
     "lodash": "^4.17.11",
-    "uuid": "^3.3.2"
+    "uuid": "^7.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
